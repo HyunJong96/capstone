@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body>
+    <%- include('../partials/nav') %>
+
+    <div class="container contact contact-show">
+        <h2>Show</h2>
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title"><%= contact.name %></h3>
+                <label>Email</label><span><%= contact.email %></span>
+                <br>
+                <label>Phone</label><span><%= contact.phone %></span>
+            </div>
+        </div>
+        <div class="contact-menu mt-2">
+            <a href="/contacts/<%= contact._id %>/edit" class="btn btn-light mr-2">Edit</a>
+            <form action="/contacts/<%= contact._id%>?_method=delete" method="post">
+                <a href="#" onclick="confirm('정말로 이 정보를 삭제하시겠습니까?')?this.parentElement.submit():null"
+                    class="btn btn-light mr-2">Delete</a>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
