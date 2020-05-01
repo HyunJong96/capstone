@@ -1,0 +1,36 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script>
+    $(document).ready(function(){
+        $('li:first-of-type').css('background-color','pink')
+    });
+</script>
+</head>
+ 
+<body>
+    <ul id="tree">
+        <li class="first">빨강</li>
+        <li>파랑</li>
+        <li class="mid">노랑</li>
+        <li>초록</li>
+            <ul>
+                <li class="apple">사과</li>
+                <li>나뭇잎</li>
+            </ul>
+        <li>보라</li>
+    </ul>
+    <ul id="tree">
+        <li>빨강</li>
+        <li>파랑</li>
+        <li class="mid">노랑</li>
+        <li>초록</li>
+            <ul>
+                <li class="apple">사과</li>
+                <li>나뭇잎</li>
+            </ul>
+        <li>보라</li>
+    </ul>
+
+</body>
+</html>

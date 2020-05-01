@@ -3,6 +3,9 @@ var router = express.Router();
 var methodOverride = require('method-override')
 var userModel = require('../db_models/userSchema')
 
+router.get('/query',function(req,res){
+  res.render('test/test')
+})
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.redirect('/contacts')

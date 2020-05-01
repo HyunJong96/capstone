@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('../partials/head2')%>
+    </head>
+    <body>
+        <%- include('../partials/nav2')%>
+
+        <div class="container">
+            <h3><%= user.username>님 개인정보 수정하기</h3>
+
+            <form action="/users/<%= user.username %>?_method=put" method="POST">
+                <div class="form-group row">
+                    <label for="currentPassword" class="col-sm-3 col-form-label">currentPassword*</label>
+                    <div class="col-sm-9">
+                        <input type="password" id="currentPassword" name="currentPassword" value="" class="form-control">
+                    </div>
+                </div>
+                <hr></hr>
+            </form>
+        </div>
+    </body>
+</html>
