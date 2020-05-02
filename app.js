@@ -6,6 +6,8 @@ var bodyParser = require('body-parser')
 var logger = require('morgan');
 const db = require('./public/db')
 const methodOverride = require('method-override')
+var flash = require('connect-flash')
+var session = require('express-session')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -26,6 +28,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(methodOverride('_method'))
+app.use(flash())
+app.use(session({secret:'Mysecret',resave:true,saveUninitialized:true}))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

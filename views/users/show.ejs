@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head2')%>
+</head>
+
+<body>
+    <%- include('../partials/nav2')%>
+
+    <div class="container">
+        <h3><%=user.username%></h3>
+        <form class="user-form">
+            <fieldset disabled>
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 col-form-label">Name</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" value="<%=user.username%>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="col-3 col-label-row">Email</label>
+                    <div class="col-9">
+                        <input id="email" name="email" value="<%=user.email%>" class="form-control">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <div>
+            <a class="btn btn-primary" href="/users">Back</a>
+            <a class="btn btn-primary" href="/users/<%=user.username%>/edit">Edit</a>
+            <form action="/users/<%=user.username%>?_mathod=delete" method="POST" class="d-inline">
+                <button class="btn btn-primary" href="#"
+                    onclick="confirm('Do you want delete this board?')?this.parentElement.submit():null">Delete</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

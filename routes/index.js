@@ -2,6 +2,17 @@ var express = require('express');
 var router = express.Router();
 var methodOverride = require('method-override')
 var userModel = require('../db_models/userSchema')
+var testModel = require('../db_models/testSchema')
+
+router.get('/virtualtest',function(req,res){
+  res.render('test/test2')
+})
+router.post('/virtualtest2',function(req,res){
+  testModel.create(req.body,function(err,result){
+    if(err) return res.json(err)
+    res.redirect('/virtualtest')
+  })
+})
 
 router.get('/query',function(req,res){
   res.render('test/test')
