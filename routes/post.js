@@ -3,6 +3,7 @@ var router = express.Router()
 var postModel = require('../db_models/postSchema')
 
 router.get('/',function(req,res){
+    console.log('session check! after login',req.session)
     postModel.find({})
     .sort('-createdAt') //createdAt을 기준으로 내림차순 정렬
     .exec(function(err,posts){

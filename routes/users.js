@@ -15,7 +15,7 @@ router.get('/',function(req,res){
 
 //new
 router.get('/new',function(req,res){
-  var user = req.flash('user')[0] || {}
+  var user = req.flash('user')[0]  || {}
   var errors = req.flash('errors')[0] || {}
   res.render('users/new',{user:user,errors:errors})
 })
@@ -43,8 +43,9 @@ router.get('/:username',function(req,res){
 
 //edit
 router.get('/:username/edit',function(req,res){
-  var user = req.flash('user')[0]
+  var user = req.flash('user')[0] || {}
   var errors = req.flash('errors')[0] || {}
+  console.log(`user : ${user} && errors : ${errors}`)
   if(!user){
     userModel.findOne({username : req.params.username},function(err,user){
       if(err) return res.json(err)
@@ -67,8 +68,8 @@ router.put('/:username',function(req,res){
     user.password = req.body.newPassword? req.body.newPassword : user.password
     for(var p in req.body){
       user[p] = req.body[p]
-      console.log(`user${p} : `,user[p])
-      console.log(`req.body${p} : `,req.body[p])
+      //console.log(`user${p} : `,user[p])
+      //console.log(`req.body${p} : `,req.body[p])
     }
     console.log('user >> ',user)
 
@@ -95,7 +96,7 @@ router.delete('/:username',function(req,res){
 module.exports = router;
 
 function parseError(errors){
-  console.log('errors! : ',errors.errors)
+  //console.log('errors! : ',errors.errors)
   var parsed={}
   if(errors.name == 'ValidationError'){
     for(var name in errors.errors){
