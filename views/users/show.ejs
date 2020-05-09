@@ -29,11 +29,13 @@
 
         <div>
             <a class="btn btn-primary" href="/users">Back</a>
-            <a class="btn btn-primary" href="/users/<%=user.username%>/edit">Edit</a>
-            <form action="/users/<%=user.username%>?_mathod=delete" method="POST" class="d-inline">
+            <% if(usAuthenticated && currentUser.id == user.id){%>
+                <a class="btn btn-primary" href="/users/<%=user.username%>/edit">Edit</a>
+                 <form action="/users/<%=user.username%>?_mathod=delete" method="POST" class="d-inline">
                 <button class="btn btn-primary" href="#"
                     onclick="confirm('Do you want delete this board?')?this.parentElement.submit():null">Delete</button>
-            </form>
+                </form>
+            <%}%>
         </div>
     </div>
 </body>

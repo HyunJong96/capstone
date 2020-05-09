@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var userModel = require('../db_models/userSchema')
+var util = require('../public/util')
 
 //index
-router.get('/',function(req,res){
+/*router.get('/',function(req,res){
   userModel.find({})
   .sort({username:1}) //sort와 같은 여러 함수가 있는데 이런 함수가 추가되면 cb함수가 .exec함수에 인자로 들어간다
   .exec(function(err,users){
@@ -11,7 +12,7 @@ router.get('/',function(req,res){
     console.log(users)
     res.render('users/index',{users:users})
   })
-})
+})*/
 
 //new
 router.get('/new',function(req,res){
@@ -26,15 +27,15 @@ router.post('/',function(req,res){
   userModel.create(req.body,function(err,user){
     if(err) {
       req.flash('user',req.body)
-      req.flash('errors',parseError(err))
+      req.flash('errors',util.parseError(err))
       return res.redirect('/users/new')
     }
-    res.redirect('/users')
+    res.redirect('/homepage/login')
   })
 })
 
 //show
-router.get('/:username',function(req,res){
+router.get('/:username',util.isLoggedin,checkPermission,function(req,res){
   userModel.findOne({username : req.params.username},function(err,user){
     if(err) return res.json(err)
     res.render('users/show',{user:user})
@@ -42,7 +43,7 @@ router.get('/:username',function(req,res){
 })
 
 //edit
-router.get('/:username/edit',function(req,res){
+router.get('/:username/edit',util.isLoggedin,checkPermission,function(req,res){
   var user = req.flash('user')[0] || {}
   var errors = req.flash('errors')[0] || {}
   console.log(`user : ${user} && errors : ${errors}`)
@@ -58,7 +59,7 @@ router.get('/:username/edit',function(req,res){
 })
 
 //update
-router.put('/:username',function(req,res){
+router.put('/:username',util.isLoggedin,checkPermission,function(req,res){
   userModel.findOne({username : req.params.username})
   .select('password') //필드값을 불러오지 않을때는 [.select('-name')]
   .exec(function(err,user){
@@ -78,7 +79,7 @@ router.put('/:username',function(req,res){
         req.flash('user',req.body)
         req.flash('errors',parseError(err))
         console.log('update flash_user >> ',req.body)
-        console.log('update flash_errors >> ',parseError(err))
+        console.log('update flash_errors >> ',util.parseError(err))
         return res.redirect('/users/'+req.params.username+'/edit')
       }
       res.redirect('/users/'+user.username)
@@ -86,31 +87,18 @@ router.put('/:username',function(req,res){
   })
 })
 
-router.delete('/:username',function(req,res){
+/*router.delete('/:username',function(req,res){
   userModel.deleteOne({usernmae : req.params.usernmae},function(err){
     if(err) return res.json(err)
     res.redirect('/users')
   })
-})
+})*/
 
 module.exports = router;
 
-function parseError(errors){
-  //console.log('errors! : ',errors.errors)
-  var parsed={}
-  if(errors.name == 'ValidationError'){
-    for(var name in errors.errors){
-      //console.log('name >>>>>>>>>>>>>>>>>>>>>>> ',name)
-      var ValidationError = errors.errors[name]
-      console.log('help !! >> ',ValidationError)
-      parsed[name] = {message:ValidationError.message}
-    }
-  }
-  else if(errors.code =='11000' && errors.errmsg.indexOf('username')>0){
-    parsed.username = {message:'This username already exists!'}
-  }
-  else{
-    parsed.unhandled = JSON.stringify(errors)
-  }
-  return parsed
+function checkPermission(req,res,next){
+  userModel.findOne({username : req.params.username},function(err, user){
+    if(err) return res.json(err)
+    if(user.id != req.user.id) return util.noPermission(req,res)
+  })
 }
